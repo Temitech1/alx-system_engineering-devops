@@ -1,1 +1,1 @@
-shell basics readme created
+shell basics readme created and authored by Opeyemi Alabi
