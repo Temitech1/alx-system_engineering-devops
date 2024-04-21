@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# a Bash script that listens on port 98 on localhost
+received_text=""
+nc -l 127.0.0.2 98
+echo "$received_text"

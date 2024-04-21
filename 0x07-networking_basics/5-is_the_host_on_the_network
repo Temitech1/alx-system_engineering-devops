@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#accepts strings as arg
+#displays an IP if no arguments passed
+#pings IP 5 times
+
+if [ $# -eq 0 ]; then
+	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
+	exit 1
+fi
+IP_ADDRESS=$1
+ping -c 5 "$IP_ADDRESS"
