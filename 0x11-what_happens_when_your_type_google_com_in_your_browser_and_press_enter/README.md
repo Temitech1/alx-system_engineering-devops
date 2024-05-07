@@ -1,0 +1,2 @@
+# WHAT HAPPENS WHEN YOU TYPE GOOGLE . COM IN YOUR BROWSER AND PRESS ENTER.
+## Readme file created by Opeyemi Alabi.
