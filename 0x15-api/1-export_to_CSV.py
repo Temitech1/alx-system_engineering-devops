@@ -9,14 +9,14 @@ import requests
 from sys import argv
 
 
-def get_user_name(users, user_id):
+def get_user_data(users, user_id):
     """
-    Retrieve the user name from the users list based on the user ID.
+    Retrieve the user's name and username from the users list.
     """
     for user in users:
         if user["id"] == int(user_id):
-            return user["name"]
-    return "Unknown"
+            return user["name"], user["username"]
+    return "Unknown", "Unknown"
 
 
 if __name__ == "__main__":
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         exit(1)
 
     users = users_response.json()
-    user_name = get_user_name(users, user_id)
+    user_name, user_username = get_user_data(users, user_id)
 
     todos_response = requests.get(todos_url)
     if todos_response.status_code != 200:
@@ -45,9 +45,7 @@ if __name__ == "__main__":
     total_tasks = len(todos)
     completed_tasks = sum(task["completed"] for task in todos)
 
-    print(f"Employee {user_name} is done with tasks"
-          f"({completed_tasks}/{total_tasks}):")
-
+    print(f"Employee {user_name} is done with tasks ({completed_tasks}/{total_tasks}):")
     for task in todos:
         if task["completed"]:
             print(f"\t {task['title']}")
@@ -62,9 +60,9 @@ if __name__ == "__main__":
         for task in todos:
             writer.writerow({
                 "USER_ID": user_id,
-                "USERNAME": user_name,
+                "USERNAME": user_username,
                 "TASK_COMPLETED_STATUS": "True" if task["completed"] else "False",
                 "TASK_TITLE": task["title"]
             })
 
-    print(f"Task data exported to {csv_filename}")
+    print(f"\nTask data exported to {csv_filename}")
