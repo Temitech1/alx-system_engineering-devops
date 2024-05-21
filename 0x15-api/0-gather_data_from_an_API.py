@@ -7,35 +7,43 @@ import requests
 from sys import argv
 
 
-def get_employee_name(todos):
+def get_user_name(users, user_id):
     """
-    Retrieve the employee name from the TODO list response.
+    Retrieve the user name from the users list based on the user ID.
     """
-    names = {todo["userId"] for todo in todos}
-    if len(names) != 1:
-        return "Unknown"
-    return list(names)[0]
+    for user in users:
+        if user["id"] == int(user_id):
+            return user["name"]
+    return "Unknown"
 
 
 if __name__ == "__main__":
     if len(argv) != 2:
-        print("Usage: ./todo.py <employee_id>")
+        print("Usage: ./todo.py <user_id>")
         exit(1)
 
-    employee_id = argv[1]
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
+    user_id = argv[1]
+    users_url = "https://jsonplaceholder.typicode.com/users"
+    todos_url = f"https://jsonplaceholder.typicode.com/users/{user_id}/todos"
 
-    response = requests.get(url)
-    if response.status_code != 200:
-        print("Failed to fetch employee TODO list.")
+    users_response = requests.get(users_url)
+    if users_response.status_code != 200:
+        print("Failed to fetch users.")
         exit(1)
 
-    todos = response.json()
-    employee_name = get_employee_name(todos)
+    users = users_response.json()
+    user_name = get_user_name(users, user_id)
+
+    todos_response = requests.get(todos_url)
+    if todos_response.status_code != 200:
+        print("Failed to fetch user TODO list.")
+        exit(1)
+
+    todos = todos_response.json()
     total_tasks = len(todos)
     completed_tasks = sum(task["completed"] for task in todos)
 
-    print(f"Employee {employee_name} is done with tasks"
+    print(f"Employee {user_name} is done with tasks"
           f"({completed_tasks}/{total_tasks}):")
 
     for task in todos:
