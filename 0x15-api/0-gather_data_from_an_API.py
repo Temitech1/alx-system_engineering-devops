@@ -3,6 +3,7 @@
 Using a REST API, for a given employee ID,
 returns information about their TODO list progress.
 """
+
 import requests
 from sys import argv
 
