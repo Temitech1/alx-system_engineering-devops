@@ -3,9 +3,19 @@
 Using a REST API, for a given employee ID,
 returns information about their TODO list progress.
 """
-
 import requests
 from sys import argv
+
+
+def get_employee_name(todos):
+    """
+    Retrieve the employee name from the TODO list response.
+    """
+    names = {todo["userId"] for todo in todos}
+    if len(names) != 1:
+        return "Unknown"
+    return list(names)[0]
+
 
 if __name__ == "__main__":
     if len(argv) != 2:
@@ -21,11 +31,12 @@ if __name__ == "__main__":
         exit(1)
 
     todos = response.json()
-    employee_name = todos[0]["userId"]
+    employee_name = get_employee_name(todos)
     total_tasks = len(todos)
     completed_tasks = sum(task["completed"] for task in todos)
 
-    print(f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}):")
+    print(f"Employee {employee_name} is done with tasks"
+          f"({completed_tasks}/{total_tasks}):")
 
     for task in todos:
         if task["completed"]:
