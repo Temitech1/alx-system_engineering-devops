@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Transfers a file from on eclient to another
+# Transfers a file from one client to another
 
 if [ $# -lt 4 ]
 then
